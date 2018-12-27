@@ -1,0 +1,4 @@
+catchorg/Catch2@v2.4.2
+gabime/spdlog@v1.2.1 --cmake header
+pqrs-org/cpp-dispatcher
+pqrs-org/cpp-filesystem
