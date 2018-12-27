@@ -23,3 +23,8 @@ TEST_CASE("find_level") {
   REQUIRE(pqrs::spdlog::find_level("[2016-10-15 00:09:47.283] [info") == std::nullopt);
   REQUIRE(pqrs::spdlog::find_level("[2016-10-15 00:09:47.283] [info]") == spdlog::level::info);
 }
+
+TEST_CASE("make_rotated_file_path") {
+  REQUIRE(pqrs::spdlog::make_rotated_file_path("log/spdlog.log") == "log/spdlog.1.log");
+  REQUIRE(pqrs::spdlog::make_rotated_file_path("/var/log/spdlog.log") == "/var/log/spdlog.1.log");
+}
