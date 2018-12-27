@@ -3,48 +3,23 @@
 
 #include <pqrs/spdlog.hpp>
 
-TEST_CASE("get_timestamp_number") {
-  {
-    auto actual = pqrs::spdlog::get_sort_key("[2016-10-15 00:09:47.283] [info] [grabber] version 0.90.50");
-    REQUIRE(actual == 20161015000947283ULL);
-  }
-  {
-    auto actual = pqrs::spdlog::get_sort_key("[]");
-    REQUIRE(actual == std::nullopt);
-  }
-  {
-    auto actual = pqrs::spdlog::get_sort_key("[yyyy-mm-dd hh:mm:ss.mmm]");
-    REQUIRE(actual == std::nullopt);
-  }
+TEST_CASE("make_sort_key") {
+  REQUIRE(pqrs::spdlog::make_sort_key("[2016-10-15 00:09:47.283] [info] [<name>] <message>") == 20161015000947283ULL);
+  REQUIRE(pqrs::spdlog::make_sort_key("[]") == std::nullopt);
+  REQUIRE(pqrs::spdlog::make_sort_key("[yyyy-mm-dd hh:mm:ss.mmm]") == std::nullopt);
+  REQUIRE(pqrs::spdlog::make_sort_key("[2016-10-15 00:09:47.283]") == 20161015000947283ULL);
+  REQUIRE(pqrs::spdlog::make_sort_key("[2016-10-15 00:09:47.283") == std::nullopt);
+  REQUIRE(pqrs::spdlog::make_sort_key("[2016 10-15 00:09:47.283]") == std::nullopt);
+  REQUIRE(pqrs::spdlog::make_sort_key("[2016-10-15 00:09:47.283 ") == std::nullopt);
+  REQUIRE(pqrs::spdlog::make_sort_key("[2016-mm-15 00:09:47.283 ") == std::nullopt);
 }
 
-TEST_CASE("get_level") {
-  {
-    auto actual = pqrs::spdlog::get_level("[2016-10-15 00:09:47.283] [info] [grabber] version 0.90.50");
-    REQUIRE(actual == spdlog::level::info);
-  }
-  {
-    auto actual = pqrs::spdlog::get_level("[2016-10-15 00:09:47.283] [error] [grabber] version 0.90.50");
-    REQUIRE(actual == spdlog::level::err);
-  }
-  {
-    auto actual = pqrs::spdlog::get_level("[2016-10-15 00:09:47.283] [unknown] [grabber] version 0.90.50");
-    REQUIRE(actual == std::nullopt);
-  }
-  {
-    auto actual = pqrs::spdlog::get_level("[2016-10-15 00:09:47.283] ");
-    REQUIRE(actual == std::nullopt);
-  }
-  {
-    auto actual = pqrs::spdlog::get_level("[2016-10-15 00:09:47.283] [");
-    REQUIRE(actual == std::nullopt);
-  }
-  {
-    auto actual = pqrs::spdlog::get_level("[2016-10-15 00:09:47.283] [info");
-    REQUIRE(actual == std::nullopt);
-  }
-  {
-    auto actual = pqrs::spdlog::get_level("[2016-10-15 00:09:47.283] [info]");
-    REQUIRE(actual == spdlog::level::info);
-  }
+TEST_CASE("find_level") {
+  REQUIRE(pqrs::spdlog::find_level("[2016-10-15 00:09:47.283] [info] [<name>]") == spdlog::level::info);
+  REQUIRE(pqrs::spdlog::find_level("[2016-10-15 00:09:47.283] [error] [<name>]") == spdlog::level::err);
+  REQUIRE(pqrs::spdlog::find_level("[2016-10-15 00:09:47.283] [unknown] [<name>]") == std::nullopt);
+  REQUIRE(pqrs::spdlog::find_level("[2016-10-15 00:09:47.283] ") == std::nullopt);
+  REQUIRE(pqrs::spdlog::find_level("[2016-10-15 00:09:47.283] [") == std::nullopt);
+  REQUIRE(pqrs::spdlog::find_level("[2016-10-15 00:09:47.283] [info") == std::nullopt);
+  REQUIRE(pqrs::spdlog::find_level("[2016-10-15 00:09:47.283] [info]") == spdlog::level::info);
 }

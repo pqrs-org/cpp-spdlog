@@ -14,7 +14,7 @@ inline const char* get_pattern(void) {
   return "[%Y-%m-%d %H:%M:%S.%e] [%l] [%n] %v";
 }
 
-inline std::optional<uint64_t> get_sort_key(const std::string& line) {
+inline std::optional<uint64_t> make_sort_key(const std::string& line) {
   // line == "[2016-09-22 20:18:37.649] [info] [<name>] <message>"
   // return 20160922201837649
 
@@ -41,7 +41,7 @@ inline std::optional<uint64_t> get_sort_key(const std::string& line) {
   ss << line[pos++];
 
   if (line[pos++] != '-') {
-    std::nullopt;
+    return std::nullopt;
   }
 
   // months
@@ -50,7 +50,7 @@ inline std::optional<uint64_t> get_sort_key(const std::string& line) {
   ss << line[pos++];
 
   if (line[pos++] != '-') {
-    std::nullopt;
+    return std::nullopt;
   }
 
   // days
@@ -59,7 +59,7 @@ inline std::optional<uint64_t> get_sort_key(const std::string& line) {
   ss << line[pos++];
 
   if (line[pos++] != ' ') {
-    std::nullopt;
+    return std::nullopt;
   }
 
   // hours
@@ -68,7 +68,7 @@ inline std::optional<uint64_t> get_sort_key(const std::string& line) {
   ss << line[pos++];
 
   if (line[pos++] != ':') {
-    std::nullopt;
+    return std::nullopt;
   }
 
   // minutes
@@ -77,7 +77,7 @@ inline std::optional<uint64_t> get_sort_key(const std::string& line) {
   ss << line[pos++];
 
   if (line[pos++] != ':') {
-    std::nullopt;
+    return std::nullopt;
   }
 
   // seconds
@@ -86,7 +86,7 @@ inline std::optional<uint64_t> get_sort_key(const std::string& line) {
   ss << line[pos++];
 
   if (line[pos++] != '.') {
-    std::nullopt;
+    return std::nullopt;
   }
 
   // milliseconds
@@ -96,17 +96,18 @@ inline std::optional<uint64_t> get_sort_key(const std::string& line) {
   ss << line[pos++];
 
   if (line[pos++] != ']') {
-    std::nullopt;
+    return std::nullopt;
   }
 
   try {
     return std::stoll(ss.str());
   } catch (...) {
   }
+
   return std::nullopt;
 }
 
-inline std::optional<::spdlog::level::level_enum> get_level(const std::string& line) {
+inline std::optional<::spdlog::level::level_enum> find_level(const std::string& line) {
   auto front = strlen("[0000-00-00 00:00:00.000] [");
   if (line.size() <= front) {
     return std::nullopt;
