@@ -1,0 +1,5 @@
+[2018-02-01 22:46:33.707] [info] [foo] message 8
+[2018-02-01 22:46:33.707] [warning] [bar] message 7
+[2018-02-01 22:46:33.707] [info] [bar] message 8
+[2018-02-05 23:22:56.338] [info] [foo] message 9
+[2018-02-05 23:22:56.340] [info] [bar] message 9
