@@ -13,6 +13,7 @@ project (test)
 
 add_executable(
   test
+  monitor_test.cpp
   read_log_files_test.cpp
   test.cpp
 )
