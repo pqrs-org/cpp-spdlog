@@ -16,6 +16,7 @@ add_executable(
   monitor_test.cpp
   read_log_files_test.cpp
   test.cpp
+  unique_filter_test.cpp
 )
 
 target_link_libraries(

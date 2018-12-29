@@ -9,3 +9,4 @@
 #include "spdlog/monitor.hpp"
 #include "spdlog/reader.hpp"
 #include "spdlog/spdlog.hpp"
+#include "spdlog/unique_filter.hpp"
