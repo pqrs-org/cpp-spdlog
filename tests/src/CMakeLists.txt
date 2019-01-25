@@ -18,9 +18,3 @@ add_executable(
   test.cpp
   unique_filter_test.cpp
 )
-
-target_link_libraries(
-  test
-  "-framework CoreFoundation"
-  "-framework CoreServices"
-)
