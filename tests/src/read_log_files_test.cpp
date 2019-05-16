@@ -79,4 +79,16 @@ TEST_CASE("read_log_files") {
 
     test_read_log_files(actual, "data/expected/max_line_count.log");
   }
+
+  // broken line
+
+  {
+    std::vector<spdlog::filename_t> target_file_paths{
+        "data/log/broken1.log",
+        "data/log/broken2.log",
+    };
+    auto actual = pqrs::spdlog::read_log_files(target_file_paths, 0);
+
+    test_read_log_files(actual, "data/expected/broken.log");
+  }
 }

@@ -1,0 +1,5 @@
+[2018-02-01 22:46:33.674] [info] [bar] message 3
+broken line
+[2018-02-01 22:46:33.674] [info] [bar] message 4
+[2018-02-01 22:46:33.707] [warning] [bar] message 7
+[2018-02-01 22:46:33.707] [info] [bar] message 8
