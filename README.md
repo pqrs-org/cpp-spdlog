@@ -11,7 +11,6 @@ cpp-spdlog depends the following classes.
 
 - [Nod](https://github.com/fr00b0/nod)
 - [pqrs::dispatcher](https://github.com/pqrs-org/cpp-dispatcher)
-- [pqrs::filesystem](https://github.com/pqrs-org/cpp-filesystem)
 - [spdlog](https://github.com/gabime/spdlog)
 
 ## Install

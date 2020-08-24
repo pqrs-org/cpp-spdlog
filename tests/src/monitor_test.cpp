@@ -8,7 +8,10 @@ public:
     time_source_ = std::make_shared<pqrs::dispatcher::hardware_time_source>();
     dispatcher_ = std::make_shared<pqrs::dispatcher::dispatcher>(time_source_);
 
-    pqrs::filesystem::create_directory_with_intermediate_directories("target", 0755);
+    std::error_code error_code;
+    std::filesystem::create_directories("target", error_code);
+    assert(!error_code);
+
     unlink("target/foo.log");
     unlink("target/foo.1.log");
     unlink("target/bar.log");

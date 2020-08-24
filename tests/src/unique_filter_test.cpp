@@ -8,7 +8,10 @@
 #include <sstream>
 
 TEST_CASE("unique_filter") {
-  pqrs::filesystem::create_directory_with_intermediate_directories("target", 0755);
+  std::error_code error_code;
+  std::filesystem::create_directories("target", error_code);
+  REQUIRE(!error_code);
+
   unlink("target/unique_filter_test.log");
 
   auto logger = spdlog::basic_logger_mt("unique_filter_test", "target/unique_filter_test.log");

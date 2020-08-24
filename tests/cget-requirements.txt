@@ -2,4 +2,3 @@ catchorg/Catch2
 fr00b0/nod
 gabime/spdlog
 pqrs-org/cpp-dispatcher
-pqrs-org/cpp-filesystem
