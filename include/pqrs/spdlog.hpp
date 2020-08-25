@@ -7,6 +7,7 @@
 // (See http://www.boost.org/LICENSE_1_0.txt)
 
 #include "spdlog/factory.hpp"
+#include "spdlog/filesystem.hpp"
 #include "spdlog/monitor.hpp"
 #include "spdlog/reader.hpp"
 #include "spdlog/spdlog.hpp"

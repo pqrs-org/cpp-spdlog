@@ -10,7 +10,7 @@ TEST_CASE("make_async_rotating_logger_mt") {
   REQUIRE(pqrs::spdlog::factory::make_async_rotating_logger_mt(
       "make_async_rotating_logger_mt_example_1",
       "target/make_async_rotating_logger_mt.log",
-      std::filesystem::perms::owner_all));
+      pqrs::spdlog::filesystem::log_directory_perms_0700);
 
   std::error_code error_code;
   std::filesystem::create_directories("target/d000", error_code);
