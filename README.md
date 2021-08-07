@@ -1,5 +1,5 @@
 [![Build Status](https://github.com/pqrs-org/cpp-spdlog/workflows/CI/badge.svg)](https://github.com/pqrs-org/cpp-spdlog/actions)
-[![License](https://img.shields.io/badge/license-Boost%20Software%20License-blue.svg)](https://github.com/pqrs-org/cpp-spdlog/blob/master/LICENSE.md)
+[![License](https://img.shields.io/badge/license-Boost%20Software%20License-blue.svg)](https://github.com/pqrs-org/cpp-spdlog/blob/main/LICENSE.md)
 
 # cpp-spdlog
 
