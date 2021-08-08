@@ -1,4 +1,5 @@
 catchorg/Catch2
 fr00b0/nod
 gabime/spdlog
+nemtrif/utfcpp
 pqrs-org/cpp-dispatcher

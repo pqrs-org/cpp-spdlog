@@ -9,6 +9,7 @@ A utility for `spdlog`.
 
 cpp-spdlog depends the following classes.
 
+- [nemtrif/utfcpp](https://github.com/nemtrif/utfcpp).
 - [Nod](https://github.com/fr00b0/nod)
 - [pqrs::dispatcher](https://github.com/pqrs-org/cpp-dispatcher)
 - [spdlog](https://github.com/gabime/spdlog)
