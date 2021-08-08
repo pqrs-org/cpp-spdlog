@@ -91,4 +91,15 @@ TEST_CASE("read_log_files") {
 
     test_read_log_files(actual, "data/expected/broken.log");
   }
+
+  // corrupted line
+
+  {
+    std::vector<spdlog::filename_t> target_file_paths{
+        "data/log/corrupted1.log",
+    };
+    auto actual = pqrs::spdlog::read_log_files(target_file_paths, 0);
+
+    test_read_log_files(actual, "data/expected/corrupted.log");
+  }
 }
