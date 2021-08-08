@@ -1,3 +1,3 @@
 [2018-02-01 22:46:34.671] [info] [bar] message 1
-[2021-02-01 22:46:34.680] [error] [bar] a corrupt character start '<U+000A>οΏ½' end
+[2021-02-01 22:46:34.680] [error] [bar] a corrupt character start '<U+000A>γγ½' end
 [2018-02-01 22:46:34.687] [info] [bar] message 2
