@@ -6,7 +6,6 @@
 #pragma once
 
 #include <cctype>
-#include <spdlog/common.h>
 
 //
 // Support for logging binary data as hex
@@ -90,7 +89,7 @@ struct formatter<spdlog::details::dump_info<T>>
 
     // parse the format string flags
     template<typename ParseContext>
-    FMT_CONSTEXPR auto parse(ParseContext &ctx) -> decltype(ctx.begin())
+    auto parse(ParseContext &ctx) -> decltype(ctx.begin())
     {
         auto it = ctx.begin();
         while (it != ctx.end() && *it != '}')
@@ -210,7 +209,7 @@ struct formatter<spdlog::details::dump_info<T>>
 
         if (put_positions)
         {
-            fmt::format_to(inserter, "{:04X}: ", pos);
+            fmt::format_to(inserter, "{:<04X}: ", pos);
         }
     }
 };
