@@ -11,14 +11,14 @@ int main(void) {
   using namespace boost::ut::literals;
 
   "make_sort_key"_test = [] {
-    expect(pqrs::spdlog::make_sort_key("[2016-10-15 00:09:47.283] [info] [<name>] <message>") == 20161015000947283ULL);
-    expect(pqrs::spdlog::make_sort_key("[]") == std::nullopt);
-    expect(pqrs::spdlog::make_sort_key("[yyyy-mm-dd hh:mm:ss.mmm]") == std::nullopt);
-    expect(pqrs::spdlog::make_sort_key("[2016-10-15 00:09:47.283]") == 20161015000947283ULL);
-    expect(pqrs::spdlog::make_sort_key("[2016-10-15 00:09:47.283") == std::nullopt);
-    expect(pqrs::spdlog::make_sort_key("[2016 10-15 00:09:47.283]") == std::nullopt);
-    expect(pqrs::spdlog::make_sort_key("[2016-10-15 00:09:47.283 ") == std::nullopt);
-    expect(pqrs::spdlog::make_sort_key("[2016-mm-15 00:09:47.283 ") == std::nullopt);
+    expect(pqrs::spdlog::find_date_number("[2016-10-15 00:09:47.283] [info] [<name>] <message>") == 20161015000947283ULL);
+    expect(pqrs::spdlog::find_date_number("[]") == std::nullopt);
+    expect(pqrs::spdlog::find_date_number("[yyyy-mm-dd hh:mm:ss.mmm]") == std::nullopt);
+    expect(pqrs::spdlog::find_date_number("[2016-10-15 00:09:47.283]") == 20161015000947283ULL);
+    expect(pqrs::spdlog::find_date_number("[2016-10-15 00:09:47.283") == std::nullopt);
+    expect(pqrs::spdlog::find_date_number("[2016 10-15 00:09:47.283]") == std::nullopt);
+    expect(pqrs::spdlog::find_date_number("[2016-10-15 00:09:47.283 ") == std::nullopt);
+    expect(pqrs::spdlog::find_date_number("[2016-mm-15 00:09:47.283 ") == std::nullopt);
   };
 
   "find_level"_test = [] {
