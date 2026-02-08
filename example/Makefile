@@ -1,4 +1,5 @@
 all:
+	$(MAKE) -C ../src/spdlog-build
 	mkdir -p build \
 		&& cd build \
 		&& cmake .. \

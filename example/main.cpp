@@ -16,8 +16,8 @@ int main(void) {
   auto dispatcher = std::make_shared<pqrs::dispatcher::dispatcher>(time_source);
 
   std::vector<spdlog::filename_t> target_file_paths{
-      "/var/log/karabiner/grabber.log",
-      "/var/log/karabiner/observer.log",
+      "/var/log/karabiner/core_service.log",
+      "/var/log/karabiner/virtual_hid_device_service.log",
   };
   auto monitor = std::make_shared<pqrs::spdlog::monitor>(dispatcher,
                                                          target_file_paths,
