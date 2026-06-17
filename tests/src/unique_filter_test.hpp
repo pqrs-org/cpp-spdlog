@@ -16,11 +16,15 @@ void run_unique_filter_test() {
     unlink("target/unique_filter_test.log");
 
     auto logger = spdlog::basic_logger_mt("unique_filter_test", "target/unique_filter_test.log");
+    logger->set_level(spdlog::level::debug);
 
     pqrs::spdlog::unique_filter unique_filter(logger, 16);
 
     // Reduce
 
+    unique_filter.debug("test1");
+    unique_filter.debug("test1");
+    unique_filter.debug("test1");
     unique_filter.info("test1");
     unique_filter.info("test1");
     unique_filter.info("test1");
@@ -64,6 +68,18 @@ void run_unique_filter_test() {
         lines.push_back(line);
         std::cout << line << std::endl;
       }
+    }
+
+    // debug test1 == 1
+
+    {
+      auto count = std::ranges::count_if(
+          lines,
+          [](auto&& l) {
+            return l.contains("test1") &&
+                   l.contains("debug");
+          });
+      expect(count == 1);
     }
 
     // info test1 == 1

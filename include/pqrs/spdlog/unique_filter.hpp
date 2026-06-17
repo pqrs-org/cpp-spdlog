@@ -30,6 +30,16 @@ public:
     messages_.clear();
   }
 
+  void debug(const std::string& message) {
+    if (exists(::spdlog::level::debug, message)) {
+      return;
+    }
+
+    if (auto logger = weak_logger_.lock()) {
+      logger->debug(message);
+    }
+  }
+
   void info(const std::string& message) {
     if (exists(::spdlog::level::info, message)) {
       return;
