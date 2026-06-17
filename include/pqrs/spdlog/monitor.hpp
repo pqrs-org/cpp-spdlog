@@ -11,13 +11,14 @@
 #include <filesystem>
 #include <nod/nod.hpp>
 #include <pqrs/dispatcher.hpp>
+#include <pqrs/gsl.hpp>
 
 namespace pqrs::spdlog {
 class monitor final : public dispatcher::extra::dispatcher_client {
 public:
   // Signals (invoked from the dispatcher thread)
 
-  nod::signal<void(std::shared_ptr<std::deque<std::string>> lines)> log_file_updated;
+  nod::signal<void(pqrs::not_null_shared_ptr_t<std::deque<std::string>> lines)> log_file_updated;
 
   // Methods
 

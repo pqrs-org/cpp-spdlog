@@ -23,16 +23,14 @@ int main() {
                                                          target_file_paths,
                                                          10);
   monitor->log_file_updated.connect([](auto&& lines) {
-    if (lines) {
-      for (const auto& l : *lines) {
-        std::cout << l << std::endl;
-      }
-
-      std::cout << std::endl;
-      std::cout << std::endl;
-      std::cout << std::endl;
-      std::cout << std::endl;
+    for (const auto& l : *lines) {
+      std::cout << l << std::endl;
     }
+
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
   });
   monitor->async_start(std::chrono::milliseconds(1000));
 

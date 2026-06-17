@@ -12,6 +12,7 @@ cpp-spdlog depends the following classes.
 - [nemtrif/utfcpp](https://github.com/nemtrif/utfcpp).
 - [Nod](https://github.com/fr00b0/nod)
 - [pqrs::dispatcher](https://github.com/pqrs-org/cpp-dispatcher)
+- [pqrs::gsl](https://github.com/pqrs-org/cpp-gsl)
 - [spdlog](https://github.com/gabime/spdlog)
 
 ## Install

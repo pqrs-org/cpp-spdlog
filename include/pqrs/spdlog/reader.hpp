@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <deque>
 #include <fstream>
+#include <pqrs/gsl.hpp>
 #include <ranges>
 #include <utf8cpp/utf8.h>
 #include <vector>
@@ -56,11 +57,11 @@ private:
 };
 } // namespace impl
 
-inline std::shared_ptr<std::deque<std::string>> read_log_files(const std::vector<::spdlog::filename_t>& target_file_paths,
-                                                               size_t max_line_count) {
+inline pqrs::not_null_shared_ptr_t<std::deque<std::string>> read_log_files(const std::vector<::spdlog::filename_t>& target_file_paths,
+                                                                           size_t max_line_count) {
   auto result = std::make_shared<std::deque<std::string>>();
 
-  std::vector<std::shared_ptr<impl::merge_log_file>> files;
+  std::vector<not_null_shared_ptr_t<impl::merge_log_file>> files;
   for (const auto& file_path : target_file_paths) {
     files.push_back(std::make_shared<impl::merge_log_file>(file_path));
     files.push_back(std::make_shared<impl::merge_log_file>(spdlog::make_rotated_file_path(file_path)));
@@ -98,6 +99,6 @@ inline std::shared_ptr<std::deque<std::string>> read_log_files(const std::vector
     }
   }
 
-  return result;
+  return pqrs::not_null_shared_ptr_t<std::deque<std::string>>(result);
 }
 } // namespace pqrs::spdlog

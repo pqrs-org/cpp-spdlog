@@ -3,7 +3,7 @@
 #include <pqrs/spdlog.hpp>
 
 namespace {
-void test_read_log_files(std::shared_ptr<std::deque<std::string>> actual,
+void test_read_log_files(pqrs::not_null_shared_ptr_t<std::deque<std::string>> actual,
                          const std::string& expected_file_path) {
   using namespace boost::ut;
 
@@ -16,7 +16,6 @@ void test_read_log_files(std::shared_ptr<std::deque<std::string>> actual,
     }
   }
 
-  expect(actual.get() != nullptr);
   expect(std::ranges::equal(*actual, expected));
 }
 } // namespace
