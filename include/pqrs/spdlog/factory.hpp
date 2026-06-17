@@ -21,15 +21,17 @@ inline std::shared_ptr<::spdlog::logger> make_async_rotating_logger_mt(const std
                                                                        std::size_t max_files = 3) {
   auto log_directory = log_file_path.parent_path();
 
-  std::error_code error_code;
-  std::filesystem::create_directories(log_directory, error_code);
-  if (error_code) {
-    return nullptr;
-  }
+  if (!log_directory.empty()) {
+    std::error_code error_code;
+    std::filesystem::create_directories(log_directory, error_code);
+    if (error_code) {
+      return nullptr;
+    }
 
-  std::filesystem::permissions(log_directory, log_directory_perms, error_code);
-  if (error_code) {
-    return nullptr;
+    std::filesystem::permissions(log_directory, log_directory_perms, error_code);
+    if (error_code) {
+      return nullptr;
+    }
   }
 
   return ::spdlog::rotating_logger_mt<::spdlog::async_factory>(logger_name,
