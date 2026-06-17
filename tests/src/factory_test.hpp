@@ -10,11 +10,20 @@ void run_factory_test() {
   };
 
   "make_async_rotating_logger_mt"_test = [] {
+    unlink("make_async_rotating_logger_mt.log");
+
     expect(pqrs::spdlog::factory::make_async_rotating_logger_mt(
                "make_async_rotating_logger_mt_example_1",
                "target/make_async_rotating_logger_mt.log",
                pqrs::spdlog::filesystem::log_directory_perms_0700)
                .get() != nullptr);
+
+    expect(pqrs::spdlog::factory::make_async_rotating_logger_mt(
+               "make_async_rotating_logger_mt_example_without_parent_path",
+               "make_async_rotating_logger_mt.log",
+               pqrs::spdlog::filesystem::log_directory_perms_0700)
+               .get() != nullptr);
+    unlink("make_async_rotating_logger_mt.log");
 
     std::error_code error_code;
     std::filesystem::create_directories("target/d000", error_code);

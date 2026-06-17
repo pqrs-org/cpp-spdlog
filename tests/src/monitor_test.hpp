@@ -98,7 +98,7 @@ void run_monitor_test() {
       expect((*lines)[2] == "[2018-02-01 22:46:33.678] [info] [foo] message 5");
     }
 
-    // rotate
+    // Rotate
 
     system("mv target/foo.log target/foo.1.log");
     system("echo '[2018-02-01 22:46:33.707] [info] [foo] message 8' >> target/foo.log");
@@ -112,6 +112,22 @@ void run_monitor_test() {
       expect((*lines)[1] == "[2018-02-01 22:46:33.671] [info] [bar] message 1");
       expect((*lines)[2] == "[2018-02-01 22:46:33.678] [info] [foo] message 5");
       expect((*lines)[3] == "[2018-02-01 22:46:33.707] [info] [foo] message 8");
+    }
+
+    // Update rotated file only.
+
+    system("echo '[2018-02-01 22:46:33.708] [info] [foo] message 9' >> target/foo.1.log");
+    monitor_test.wait();
+
+    {
+      auto lines = monitor_test.get_lines();
+      expect(lines.get() != nullptr);
+      expect(lines->size() == 5);
+      expect((*lines)[0] == "[2018-02-01 22:46:33.670] [info] [foo] message 1");
+      expect((*lines)[1] == "[2018-02-01 22:46:33.671] [info] [bar] message 1");
+      expect((*lines)[2] == "[2018-02-01 22:46:33.678] [info] [foo] message 5");
+      expect((*lines)[3] == "[2018-02-01 22:46:33.707] [info] [foo] message 8");
+      expect((*lines)[4] == "[2018-02-01 22:46:33.708] [info] [foo] message 9");
     }
   };
 }

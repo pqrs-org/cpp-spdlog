@@ -45,14 +45,19 @@ public:
             bool updated = false;
 
             for (const auto& file_path : target_file_paths_) {
-              std::error_code error_code;
-              auto file_size = std::filesystem::file_size(file_path, error_code);
-              if (!error_code) {
-                if (auto it = file_sizes_.find(file_path);
-                    it == file_sizes_.end() ||
-                    it->second != file_size) {
-                  file_sizes_[file_path] = file_size;
-                  updated = true;
+              for (const auto& monitored_file_path : {
+                       file_path,
+                       spdlog::make_rotated_file_path(file_path),
+                   }) {
+                std::error_code error_code;
+                auto file_size = std::filesystem::file_size(monitored_file_path, error_code);
+                if (!error_code) {
+                  if (auto it = file_sizes_.find(monitored_file_path);
+                      it == file_sizes_.end() ||
+                      it->second != file_size) {
+                    file_sizes_[monitored_file_path] = file_size;
+                    updated = true;
+                  }
                 }
               }
             }
