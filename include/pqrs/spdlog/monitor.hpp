@@ -49,6 +49,7 @@ public:
                        file_path,
                        spdlog::make_rotated_file_path(file_path),
                    }) {
+                // Log files are expected to be append-only, so file size is enough to detect updates.
                 std::error_code error_code;
                 auto file_size = std::filesystem::file_size(monitored_file_path, error_code);
                 if (!error_code) {
