@@ -1,6 +1,8 @@
+#include <algorithm>
 #include <boost/ut.hpp>
 #include <pqrs/spdlog.hpp>
 #include <spdlog/sinks/basic_file_sink.h>
+#include <string>
 
 void run_unique_filter_test() {
   using namespace boost::ut;
@@ -44,9 +46,7 @@ void run_unique_filter_test() {
 
     unique_filter.info("test3");
     for (int i = 0; i < 100; ++i) {
-      std::stringstream ss;
-      ss << "dummy " << i;
-      unique_filter.info(ss.str());
+      unique_filter.info("dummy " + std::to_string(i));
     }
     unique_filter.info("test3");
 
@@ -69,58 +69,58 @@ void run_unique_filter_test() {
     // info test1 == 1
 
     {
-      auto count = std::count_if(std::begin(lines),
-                                 std::end(lines),
-                                 [](auto&& l) {
-                                   return l.find("test1") != std::string::npos &&
-                                          l.find("info") != std::string::npos;
-                                 });
+      auto count = std::ranges::count_if(
+          lines,
+          [](auto&& l) {
+            return l.contains("test1") &&
+                   l.contains("info");
+          });
       expect(count == 1);
     }
 
     // warn test1 == 1
 
     {
-      auto count = std::count_if(std::begin(lines),
-                                 std::end(lines),
-                                 [](auto&& l) {
-                                   return l.find("test1") != std::string::npos &&
-                                          l.find("warn") != std::string::npos;
-                                 });
+      auto count = std::ranges::count_if(
+          lines,
+          [](auto&& l) {
+            return l.contains("test1") &&
+                   l.contains("warn");
+          });
       expect(count == 1);
     }
 
     // error test1 == 1
 
     {
-      auto count = std::count_if(std::begin(lines),
-                                 std::end(lines),
-                                 [](auto&& l) {
-                                   return l.find("test1") != std::string::npos &&
-                                          l.find("error") != std::string::npos;
-                                 });
+      auto count = std::ranges::count_if(
+          lines,
+          [](auto&& l) {
+            return l.contains("test1") &&
+                   l.contains("error");
+          });
       expect(count == 1);
     }
 
     // test2 == 3
 
     {
-      auto count = std::count_if(std::begin(lines),
-                                 std::end(lines),
-                                 [](auto&& l) {
-                                   return l.find("test2") != std::string::npos;
-                                 });
+      auto count = std::ranges::count_if(
+          lines,
+          [](auto&& l) {
+            return l.contains("test2");
+          });
       expect(count == 3);
     }
 
     // test3 == 2
 
     {
-      auto count = std::count_if(std::begin(lines),
-                                 std::end(lines),
-                                 [](auto&& l) {
-                                   return l.find("test3") != std::string::npos;
-                                 });
+      auto count = std::ranges::count_if(
+          lines,
+          [](auto&& l) {
+            return l.contains("test3");
+          });
       expect(count == 2);
     }
   };

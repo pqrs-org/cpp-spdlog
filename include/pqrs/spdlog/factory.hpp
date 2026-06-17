@@ -9,9 +9,7 @@
 #include <spdlog/sinks/rotating_file_sink.h>
 #include <spdlog/sinks/stdout_sinks.h>
 
-namespace pqrs {
-namespace spdlog {
-namespace factory {
+namespace pqrs::spdlog::factory {
 inline std::shared_ptr<::spdlog::logger> make_stdout_logger_mt(const std::string& logger_name) {
   return ::spdlog::stdout_logger_mt(logger_name);
 }
@@ -39,6 +37,4 @@ inline std::shared_ptr<::spdlog::logger> make_async_rotating_logger_mt(const std
                                                                max_size,
                                                                max_files);
 }
-} // namespace factory
-} // namespace spdlog
-} // namespace pqrs
+} // namespace pqrs::spdlog::factory

@@ -12,8 +12,7 @@
 #include <nod/nod.hpp>
 #include <pqrs/dispatcher.hpp>
 
-namespace pqrs {
-namespace spdlog {
+namespace pqrs::spdlog {
 class monitor final : public dispatcher::extra::dispatcher_client {
 public:
   // Signals (invoked from the dispatcher thread)
@@ -32,7 +31,7 @@ public:
                                    timer_(*this) {
   }
 
-  virtual ~monitor(void) {
+  ~monitor() override {
     detach_from_dispatcher([this] {
       timer_.stop();
     });
@@ -48,8 +47,8 @@ public:
               std::error_code error_code;
               auto file_size = std::filesystem::file_size(file_path, error_code);
               if (!error_code) {
-                auto it = file_sizes_.find(file_path);
-                if (it == std::end(file_sizes_) ||
+                if (auto it = file_sizes_.find(file_path);
+                    it == file_sizes_.end() ||
                     it->second != file_size) {
                   file_sizes_[file_path] = file_size;
                   updated = true;
@@ -73,5 +72,4 @@ private:
   dispatcher::extra::timer timer_;
   std::unordered_map<std::string, std::uintmax_t> file_sizes_;
 };
-} // namespace spdlog
-} // namespace pqrs
+} // namespace pqrs::spdlog

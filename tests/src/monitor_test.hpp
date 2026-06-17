@@ -3,7 +3,7 @@
 
 class monitor_test final {
 public:
-  monitor_test(void) {
+  monitor_test() {
     time_source_ = std::make_shared<pqrs::dispatcher::hardware_time_source>();
     dispatcher_ = std::make_shared<pqrs::dispatcher::dispatcher>(time_source_);
 
@@ -33,20 +33,20 @@ public:
     monitor_->async_start(std::chrono::milliseconds(100));
   }
 
-  ~monitor_test(void) {
+  ~monitor_test() {
     monitor_ = nullptr;
 
     dispatcher_->terminate();
     dispatcher_ = nullptr;
   }
 
-  std::shared_ptr<std::deque<std::string>> get_lines(void) {
+  std::shared_ptr<std::deque<std::string>> get_lines() {
     std::lock_guard<std::mutex> lock(lines_mutex_);
 
     return lines_;
   }
 
-  void wait(void) {
+  void wait() {
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
   }
 

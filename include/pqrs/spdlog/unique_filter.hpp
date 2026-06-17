@@ -6,8 +6,15 @@
 
 // `pqrs::spdlog::unique_filter` can be used safely in a multi-threaded environment.
 
-namespace pqrs {
-namespace spdlog {
+#include <algorithm>
+#include <deque>
+#include <memory>
+#include <mutex>
+#include <spdlog/spdlog.h>
+#include <string>
+#include <utility>
+
+namespace pqrs::spdlog {
 class unique_filter final {
 public:
   unique_filter(const unique_filter&) = delete;
@@ -17,7 +24,7 @@ public:
                                                  max_history_count_(max_history_count) {
   }
 
-  void reset(void) {
+  void reset() {
     std::lock_guard<std::mutex> lock(messages_mutex_);
 
     messages_.clear();
@@ -58,13 +65,12 @@ private:
               const std::string& message) {
     std::lock_guard<std::mutex> lock(messages_mutex_);
 
-    for (const auto& it : messages_) {
-      if (it.first == level && it.second == message) {
-        return true;
-      }
+    if (std::ranges::contains(messages_,
+                              std::pair{level, message})) {
+      return true;
     }
 
-    messages_.push_back(std::make_pair(level, message));
+    messages_.emplace_back(level, message);
     while (messages_.size() > max_history_count_) {
       messages_.pop_front();
     }
@@ -77,5 +83,4 @@ private:
   std::deque<std::pair<::spdlog::level::level_enum, std::string>> messages_;
   mutable std::mutex messages_mutex_;
 };
-} // namespace spdlog
-} // namespace pqrs
+} // namespace pqrs::spdlog

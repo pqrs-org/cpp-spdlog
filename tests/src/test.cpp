@@ -6,7 +6,7 @@
 #include "read_log_files_test.hpp"
 #include "unique_filter_test.hpp"
 
-int main(void) {
+int main() {
   using namespace boost::ut;
   using namespace boost::ut::literals;
 

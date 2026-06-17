@@ -1,9 +1,10 @@
+#include <algorithm>
 #include <boost/ut.hpp>
 #include <pqrs/spdlog.hpp>
 
 namespace {
 void test_read_log_files(std::shared_ptr<std::deque<std::string>> actual,
-                         const std::string expected_file_path) {
+                         const std::string& expected_file_path) {
   using namespace boost::ut;
 
   std::deque<std::string> expected;
@@ -16,10 +17,7 @@ void test_read_log_files(std::shared_ptr<std::deque<std::string>> actual,
   }
 
   expect(actual.get() != nullptr);
-  expect(actual->size() == expected.size());
-  for (size_t i = 0; i < actual->size(); ++i) {
-    expect((*actual)[i] == expected[i]);
-  }
+  expect(std::ranges::equal(*actual, expected));
 }
 } // namespace
 
