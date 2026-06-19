@@ -3,10 +3,9 @@
 
 class monitor_test final {
 public:
-  monitor_test() {
-    time_source_ = std::make_shared<pqrs::dispatcher::hardware_time_source>();
-    dispatcher_ = std::make_shared<pqrs::dispatcher::dispatcher>(time_source_);
-
+  monitor_test(size_t max_line_count = 0)
+      : time_source_(std::make_shared<pqrs::dispatcher::hardware_time_source>()),
+        dispatcher_(std::make_shared<pqrs::dispatcher::dispatcher>(time_source_.get())) {
     std::error_code error_code;
     std::filesystem::create_directories("target", error_code);
     assert(!error_code);
@@ -21,9 +20,9 @@ public:
         "target/bar.log",
     };
 
-    monitor_ = std::make_shared<pqrs::spdlog::monitor>(dispatcher_,
+    monitor_ = std::make_shared<pqrs::spdlog::monitor>(dispatcher_.get(),
                                                        target_file_paths,
-                                                       0);
+                                                       max_line_count);
     monitor_->log_file_updated.connect([this](auto&& lines) {
       std::lock_guard<std::mutex> lock(lines_mutex_);
 
@@ -37,10 +36,9 @@ public:
     monitor_ = nullptr;
 
     dispatcher_->terminate();
-    dispatcher_ = nullptr;
   }
 
-  std::shared_ptr<std::deque<std::string>> get_lines() {
+  [[nodiscard]] std::shared_ptr<std::deque<std::string>> get_lines() {
     std::lock_guard<std::mutex> lock(lines_mutex_);
 
     return lines_;
@@ -51,8 +49,8 @@ public:
   }
 
 private:
-  std::shared_ptr<pqrs::dispatcher::hardware_time_source> time_source_;
-  std::shared_ptr<pqrs::dispatcher::dispatcher> dispatcher_;
+  pqrs::not_null_shared_ptr_t<pqrs::dispatcher::hardware_time_source> time_source_;
+  pqrs::not_null_shared_ptr_t<pqrs::dispatcher::dispatcher> dispatcher_;
   std::shared_ptr<pqrs::spdlog::monitor> monitor_;
   std::shared_ptr<std::deque<std::string>> lines_;
   mutable std::mutex lines_mutex_;
@@ -129,5 +127,20 @@ void run_monitor_test() {
       expect((*lines)[3] == "[2018-02-01 22:46:33.707] [info] [foo] message 8");
       expect((*lines)[4] == "[2018-02-01 22:46:33.708] [info] [foo] message 9");
     }
+  };
+
+  "monitor max_line_count"_test = [] {
+    monitor_test monitor_test(2);
+
+    system("echo '[2018-02-01 22:46:33.670] [info] [foo] message 1' >> target/foo.log");
+    system("echo '[2018-02-01 22:46:33.671] [info] [bar] message 1' >> target/bar.log");
+    system("echo '[2018-02-01 22:46:33.678] [info] [foo] message 5' >> target/foo.log");
+    monitor_test.wait();
+
+    auto lines = monitor_test.get_lines();
+    expect(lines.get() != nullptr);
+    expect(lines->size() == 2);
+    expect((*lines)[0] == "[2018-02-01 22:46:33.671] [info] [bar] message 1");
+    expect((*lines)[1] == "[2018-02-01 22:46:33.678] [info] [foo] message 5");
   };
 }
